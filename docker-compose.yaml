@@ -1,33 +1,33 @@
 services:
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: devpilot-postgres
+    container_name: huGit-postgres
     environment:
-      POSTGRES_DB: devpilot
+      POSTGRES_DB: huGit
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
     volumes:
-      - devpilot_pg_data:/var/lib/postgresql/data
+      - huGit_pg_data:/var/lib/postgresql/data
       - ./docker/postgres/init-extensions.sql:/docker-entrypoint-initdb.d/01-extensions.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d devpilot"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d huGit"]
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
-      - devpilot-net
+      - huGit-net
 
   backend:
     build:
       context: ./Backend
       dockerfile: Dockerfile
-    container_name: devpilot-backend
+    container_name: huGit-backend
     env_file:
       - ./Backend/scratch.env
     environment:
-      DB_URL: jdbc:postgresql://postgres:5432/devpilot
+      DB_URL: jdbc:postgresql://postgres:5432/huGit
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
     ports:
@@ -36,13 +36,13 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - devpilot-net
+      - huGit-net
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: devpilot-frontend
+    container_name: huGit-frontend
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8081
     ports:
@@ -50,11 +50,11 @@ services:
     depends_on:
       - backend
     networks:
-      - devpilot-net
+      - huGit-net
 
 volumes:
-  devpilot_pg_data:
+  huGit_pg_data:
 
 networks:
-  devpilot-net:
+  huGit-net:
     driver: bridge

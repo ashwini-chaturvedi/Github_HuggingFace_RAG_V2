@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>backend</groupId>
-    <artifactId>devPilotBackend</artifactId>
+    <artifactId>hugitbackend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>devPilotBackend</name>
-    <description>devPilotBackend</description>
+    <name>hugitbackend</name>
+    <description>huGit backend</description>
     <url/>
     <licenses>
         <license/>
