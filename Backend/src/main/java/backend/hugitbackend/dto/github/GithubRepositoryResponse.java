@@ -1,11 +1,7 @@
 package backend.hugitbackend.dto.github;
 
 import backend.hugitbackend.entity.enums.IndexStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -14,7 +10,7 @@ import java.util.UUID;
 @Builder
 public record GithubRepositoryResponse(
        UUID id,
-       long githubId,
+       UUID githubConnectionId,
        long githubRepoId,
        String owner,
        String name,

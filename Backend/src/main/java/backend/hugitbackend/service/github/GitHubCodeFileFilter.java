@@ -1,13 +1,14 @@
-package backend.hugitbackend.service.indexing;
+package backend.hugitbackend.service.github;
 //This will filter out the things from file that we don't have to Index
 
+import backend.hugitbackend.service.indexing.DetectLanguage;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 import java.util.Set;
 
 @Component
-public class GithubCodeFileFilter {
+public class GitHubCodeFileFilter implements DetectLanguage {
     public static final Set<String>SKIP_DIR_PARTS=Set.of(
             "node_modules",
             ".git",

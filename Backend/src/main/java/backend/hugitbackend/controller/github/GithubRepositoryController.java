@@ -4,7 +4,7 @@ import backend.hugitbackend.dto.github.GithubRepositoryResponse;
 import backend.hugitbackend.dto.records.IndexStatusResponse;
 import backend.hugitbackend.entity.github.GithubRepository;
 import backend.hugitbackend.security.CurrentUser;
-import backend.hugitbackend.service.github.GithubRepositoryService;
+import backend.hugitbackend.service.github.GitHubRepositoryService;
 import backend.hugitbackend.service.indexing.IndexingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class GithubRepositoryController {
 
     private final CurrentUser currentUser;
-    private final GithubRepositoryService gitHubRepositoryService;
+    private final GitHubRepositoryService gitHubRepositoryService;
     private final IndexingService indexingService;
 
     @GetMapping

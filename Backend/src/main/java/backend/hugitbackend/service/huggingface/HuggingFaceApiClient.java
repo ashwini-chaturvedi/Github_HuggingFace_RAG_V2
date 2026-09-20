@@ -101,13 +101,13 @@ public class HuggingFaceApiClient {
 
         return new String(raw,StandardCharsets.UTF_8);
             // WARNING: only call this for text files (README.md, config.json, source in Space repos).
-            // If this hits a .safetensors/.bin/.gguf file, you'll get garbage — your GithubCodeFileFilter
+            // If this hits a .safetensors/.bin/.gguf file, you'll get garbage — your GitHubCodeFileFilter
             // needs to reject binary extensions BEFORE calling this, same discipline as your
-            // GithubApiClient already assumes about GitHub's binary files, just enforced earlier here
+            // GitHubApiClient already assumes about GitHub's binary files, just enforced earlier here
             // since there's no encoding-field escape hatch to check first.
     }
 
-    // Equivalent of "get repo info" — no GithubApiClient counterpart shown, but you'll want it.
+    // Equivalent of "get repo info" — no GitHubApiClient counterpart shown, but you'll want it.
     // Flagged earlier as unverified against this specific OpenAPI doc — test with a real call first.
     public Map<String,Object>getRepoMetaData(String accessToken, HuggingFaceRepoType hfRepoType,
                                              String namespace,String repo){

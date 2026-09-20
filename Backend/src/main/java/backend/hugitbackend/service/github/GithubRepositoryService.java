@@ -20,16 +20,16 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class GithubRepositoryService {
+public class GitHubRepositoryService {
     private final GitHubRepositoryRepo gitHubRepoRepository;
     private final UserService userService;
-    private final GithubService githubService;
-    private final GithubApiClient githubApiClient;
+    private final GitHubService githubService;
+    private final GitHubApiClient githubApiClient;
 
     @Transactional
     public List<GithubRepositoryResponse>syncAndListRepositories(UUID githubId){
         GithubResponse githubResponse=this.githubService.requiredById(githubId);
-        String accessToken=this.githubService.decryptAccessToken(githubResponse);
+        String accessToken=githubResponse.accessToken();
         List<Map<String,Object>> githubRepositories=this.githubApiClient.listUserRepos(accessToken);
 
         List<GithubRepository> saved=new ArrayList<>();
@@ -37,13 +37,13 @@ public class GithubRepositoryService {
         for(Map<String,Object>repo:githubRepositories){
             Long githubRepoId=toLong(repo.get("id"));
             GithubRepository repository=this.gitHubRepoRepository
-                    .findByGithubIdAndGithubRepoId(githubId,githubRepoId)
+                    .findByGithubConnectionIdAndGithubRepoId(githubId,githubRepoId)
                     .orElseGet(GithubRepository::new);
 
             String fullName=String.valueOf(repo.get("full_name"));
             String[] parts=fullName.split("/",2);
 
-            repository.setGithubId(githubId);
+            repository.setGithubConnectionId(githubId);
             repository.setGithubRepoId(githubRepoId);
             repository.setOwner(parts.length>0?parts[0]:String.valueOf(repo.get("owner")));
             repository.setName(parts.length>1?parts[1]:String.valueOf(repo.get("name")));
@@ -77,14 +77,14 @@ public class GithubRepositoryService {
 
     @Transactional(readOnly = true)
     public List<GithubRepositoryResponse>sortedList(UUID githubId){
-        return this.gitHubRepoRepository.findByGithubIdOrderByFullNameAsc(githubId).stream()
+        return this.gitHubRepoRepository.findByGithubConnectionIdAfterOrderByFullNameAsc(githubId).stream()
                 .map(this::mapResponse)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public GithubRepository requiredOwned(UUID repoId, UUID githubId){
-        return this.gitHubRepoRepository.findByIdAndGithubId(repoId,githubId)
+        return this.gitHubRepoRepository.findByIdAndGithubConnectionId(repoId,githubId)
                 .orElseThrow(()->new NotFoundException("Repository Not Found"));
     }
 
@@ -118,7 +118,7 @@ public class GithubRepositoryService {
                 :repo.getIndexStatus();
         return GithubRepositoryResponse.builder()
                 .id(repo.getId())
-                .githubId(repo.getGithubId())
+                .githubConnectionId(repo.getGithubConnectionId())
                 .githubRepoId(repo.getGithubRepoId())
                 .owner(repo.getOwner())
                 .name(repo.getName())

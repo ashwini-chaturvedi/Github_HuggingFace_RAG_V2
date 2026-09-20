@@ -6,6 +6,7 @@ import backend.hugitbackend.entity.User;
 import backend.hugitbackend.entity.github.Github;
 import backend.hugitbackend.repository.github.GithubRepo;
 import backend.hugitbackend.repository.UserRepo;
+import backend.hugitbackend.repository.huggingface.HuggingFaceRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepo userRepository;
     private final GithubRepo githubRepo;
+    private final HuggingFaceRepo huggingFaceRepo;
     public final TextEncryptor tokenEncryptor;
 
     @Transactional(readOnly = true)
@@ -28,63 +30,6 @@ public class UserService {
 
         return this.mapUserToUserResponse(user);
     }
-
-    @Transactional
-    public User upsertFromGitHub(Map<String, Object> attributes, String accessToken, String scopes) {
-        Long githubId=toLong(attributes.get("id"));
-        String login=String.valueOf(attributes.get("login"));
-        String name=attributes.get("name")!=null
-                ?String.valueOf(attributes.get("name"))
-                :login;
-        String avatarUrl=attributes.get("avatar_url")!=null?
-                String.valueOf(attributes.get("avatar_url"))
-                :null;
-        String encryptToken=tokenEncryptor.encrypt(accessToken);
-
-        User user=this.userRepository.findByGithubId(githubId).orElseGet(User::new);
-
-        Github github= new Github();
-        github.setGithubId(githubId);
-        github.setGithubUserName(login);
-        github.setAvatarURL(avatarUrl);
-        github.setAccessToken(encryptToken);
-        github.setDisplayName(name);
-        github.setTokenScope(scopes);
-
-        user.setGithub(github);
-
-
-        return  this.userRepository.save(user);
-    }
-    @Transactional
-    public User upsertFromHuggingFace(Map<String, Object> attributes, String accessToken, String scopes) {
-        Long githubId=toLong(attributes.get("id"));
-        String login=String.valueOf(attributes.get("login"));
-        String name=attributes.get("name")!=null
-                ?String.valueOf(attributes.get("name"))
-                :login;
-        String avatarUrl=attributes.get("avatar_url")!=null?
-                String.valueOf(attributes.get("avatar_url"))
-                :null;
-        String encryptToken=tokenEncryptor.encrypt(accessToken);
-
-        User user=this.userRepository.findByGithubId(githubId).orElseGet(User::new);
-
-        Github github= new Github();
-        github.setGithubId(githubId);
-        github.setGithubUserName(login);
-        github.setAvatarURL(avatarUrl);
-        github.setAccessToken(encryptToken);
-        github.setDisplayName(name);
-        github.setTokenScope(scopes);
-
-        user.setGithub(github);
-
-
-        return  this.userRepository.save(user);
-    }
-
-
 
 
     //helper functions
@@ -103,6 +48,8 @@ public class UserService {
                 .description(user.getDescription())
                 .githubId(user.getGithubId())
                 .huggingFaceId(user.getHuggingFaceId())
+                .isGitHubConnected(this.githubRepo.findByUserId(user.getId()).isPresent())
+                .isHuggingFaceConnected(this.huggingFaceRepo.findByUserId(user.getId()).isPresent())
                 .createdAt(user.getCreatedAt())
                 .build();
     }

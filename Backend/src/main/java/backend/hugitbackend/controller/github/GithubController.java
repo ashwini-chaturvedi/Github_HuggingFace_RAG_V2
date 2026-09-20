@@ -1,6 +1,6 @@
 package backend.hugitbackend.controller.github;
 
-import backend.hugitbackend.service.github.GithubRepositoryService;
+import backend.hugitbackend.service.github.GitHubRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class GithubController {
 
-    private final GithubRepositoryService gitHubService;
+    private final GitHubRepositoryService gitHubService;
 }

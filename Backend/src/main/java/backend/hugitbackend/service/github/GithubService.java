@@ -5,17 +5,14 @@ import backend.hugitbackend.dto.github.GithubResponse;
 import backend.hugitbackend.entity.github.Github;
 import backend.hugitbackend.repository.github.GithubRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class GithubService {
-    private final TextEncryptor tokenEncryptor;
+public class GitHubService {
     private final GithubRepo githubRepo;
 
     public GithubResponse saveGithub(GithubRequest githubRequest){
@@ -33,32 +30,7 @@ public class GithubService {
         return this.mapGithubToGithubResponse(github);
     }
 
-    @Transactional
-    public Github upsertFromGitHub(Map<String, Object> attributes, String accessToken, String scopes) {
-        Long githubId=toLong(attributes.get("id"));
-        String login=String.valueOf(attributes.get("login"));
-        String name=attributes.get("name")!=null
-                ?String.valueOf(attributes.get("name"))
-                :login;
-        String avatarUrl=attributes.get("avatar_url")!=null?
-                String.valueOf(attributes.get("avatar_url"))
-                :null;
-        String encryptToken=tokenEncryptor.encrypt(accessToken);
 
-        Github github= this.githubRepo.findByGithubId(githubId).orElseGet(Github::new);
-
-        github.setGithubId(githubId);
-        github.setGithubUserName(login);
-        github.setAvatarURL(avatarUrl);
-        github.setAccessToken(encryptToken);
-        github.setDisplayName(name);
-        github.setTokenScope(scopes);
-
-        user.setGithub(github);
-
-
-        return  this.userRepository.save(user);
-    }
 
     //Helper methods
     private static Long toLong(Object value){
@@ -73,7 +45,7 @@ public class GithubService {
                 .githubUserName(githubRequest.githubUserName())
                 .displayName(githubRequest.displayName())
                 .avatarURL(githubRequest.avatarURL())
-                .accessToken(this.tokenEncryptor.encrypt(githubRequest.accessToken()))
+                .accessToken(githubRequest.accessToken())
                 .tokenScope(githubRequest.tokenScope())
                 .build();
     }
@@ -88,9 +60,5 @@ public class GithubService {
                 .tokenScope(github.getTokenScope())
                 .createdAt(github.getCreatedAt())
                 .build();
-    }
-
-    public String decryptAccessToken(GithubResponse githubResponse){
-        return this.tokenEncryptor.decrypt(githubResponse.accessToken());
     }
 }

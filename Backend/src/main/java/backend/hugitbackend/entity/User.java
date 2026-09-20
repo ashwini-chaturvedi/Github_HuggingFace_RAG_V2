@@ -43,6 +43,11 @@ public class User {
     @Column(name = "hugging_face_id")
     private long huggingFaceId;
 
+    @Column(name = "is_github_connected")
+    private boolean isGitHubConnected;
+    @Column(name="is_hugging_face_connected")
+    private boolean isHuggingFaceConnected;
+
     @Column(name = "created_at",nullable = false,updatable = false)
     private Instant createdAt;
 

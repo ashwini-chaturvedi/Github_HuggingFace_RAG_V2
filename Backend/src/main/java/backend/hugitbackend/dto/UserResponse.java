@@ -19,6 +19,8 @@ public record UserResponse(
         String description,
         long githubId,
         long huggingFaceId,
+        boolean isGitHubConnected,
+        boolean isHuggingFaceConnected,
         Instant createdAt
 
 ) {

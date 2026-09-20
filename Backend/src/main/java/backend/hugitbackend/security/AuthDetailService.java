@@ -5,6 +5,7 @@ import backend.hugitbackend.entity.User;
 import backend.hugitbackend.exceptions.NotFoundException;
 import backend.hugitbackend.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +18,8 @@ public class AuthDetailService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
-        User user=this.userRepo.findByEmailId(emailId).orElseThrow(NotFoundException::new);
+    public @NonNull UserDetails loadUserByUsername(@NonNull String userName) throws UsernameNotFoundException {
+        User user=this.userRepo.findByUserName(userName).orElseThrow(NotFoundException::new);
 
         return new AuthPrincipal(user);
     }

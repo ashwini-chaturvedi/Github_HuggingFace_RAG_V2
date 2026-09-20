@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface GithubRepo extends JpaRepository<Github, UUID> {
     @NonNull Optional<Github>findById(@NonNull UUID id);
    Optional<Github>findByGithubId( long githubId);
+   Optional<Github>findByUserId( UUID userId);
 }

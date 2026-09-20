@@ -15,7 +15,7 @@ import backend.hugitbackend.service.ai.ChatPromptBuilder;
 import backend.hugitbackend.service.ai.ChatStreamHandler;
 import backend.hugitbackend.service.ai.CitationMapper;
 import backend.hugitbackend.service.ai.CodeContextRetriever;
-import backend.hugitbackend.service.github.GithubRepositoryService;
+import backend.hugitbackend.service.github.GitHubRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class ChatService {
     private final ChatSessionRepo chatSessionRepository;
     private final ChatMessageRepo chatMessageRepository;
-    private final GithubRepositoryService repoService;
+    private final GitHubRepositoryService repoService;
     private final CodeContextRetriever codeContextRetriever;
     private final ChatPromptBuilder chatPromptBuilder;
     private final ChatStreamHandler chatStreamHandler;

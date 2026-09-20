@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "github_repositories",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id","github_repo_id"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"github_connection_id","github_repo_id"}))
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +20,8 @@ public class GithubRepository {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "github_id", nullable = false)
-    private UUID githubId;
+    @Column(name = "github_connection_id", nullable = false)
+    private UUID githubConnectionId;
 
     @Column(name = "github_repo_id",nullable = false)
     private long githubRepoId;

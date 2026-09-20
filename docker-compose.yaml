@@ -16,45 +16,45 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - huGit-net
+#    networks:
+#      - huGit-net
 
-  backend:
-    build:
-      context: ./Backend
-      dockerfile: Dockerfile
-    container_name: huGit-backend
-    env_file:
-      - ./Backend/scratch.env
-    environment:
-      DB_URL: jdbc:postgresql://postgres:5432/huGit
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
-    ports:
-      - "8081:8081"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - huGit-net
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: huGit-frontend
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8081
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    networks:
-      - huGit-net
+#  backend:
+#    build:
+#      context: ./Backend
+#      dockerfile: Dockerfile
+#    container_name: huGit-backend
+#    env_file:
+#      - ./Backend/scratch.env
+#    environment:
+#      DB_URL: jdbc:postgresql://postgres:5432/huGit
+#      DB_USERNAME: postgres
+#      DB_PASSWORD: postgres
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    networks:
+#      - huGit-net
+#
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    container_name: huGit-frontend
+#    environment:
+#      NEXT_PUBLIC_API_URL: http://localhost:8081
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - backend
+#    networks:
+#      - huGit-net
 
 volumes:
   huGit_pg_data:
 
-networks:
-  huGit-net:
-    driver: bridge
+#networks:
+#  huGit-net:
+#    driver: bridge

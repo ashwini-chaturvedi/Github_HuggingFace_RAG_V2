@@ -3,6 +3,7 @@ package backend.hugitbackend.dto;
 import backend.hugitbackend.entity.User;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Data
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class AuthPrincipal implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return this.user.getEmailId();
+    public @NonNull String getUsername() {
+        return this.user.getUserName();
     }
 }

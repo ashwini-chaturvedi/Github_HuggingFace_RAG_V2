@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Builder
 public record GithubRepositoryRequest(
-        UUID userId,
-        Long githubRepoId,
+        long githubConnectionId,
+        long githubRepoId,
         String owner,
         String name,
         String fullName,
@@ -24,6 +24,5 @@ public record GithubRepositoryRequest(
         int filesTotal,
         int filesProcessed,
         String errorMessage
-
 ) {
 }

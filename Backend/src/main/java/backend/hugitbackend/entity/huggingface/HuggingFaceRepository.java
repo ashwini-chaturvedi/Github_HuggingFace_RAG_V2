@@ -16,14 +16,16 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "github_repositories",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"hugging_face_connection_id","repo_id"}))
 public class HuggingFaceRepository {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "hugging_face_id",nullable = false)
-    private UUID huggingFaceId;
+    @Column(name = "hugging_face_connection_id",nullable = false)
+    private UUID githubConnectionId;
 
     @Column(name = "repo_id",nullable = false,length = 300)
     private String repoId;
@@ -94,6 +96,11 @@ public class HuggingFaceRepository {
         if(createdAt==null) createdAt=now;
         updatedAt=now;
         if(revision==null) revision="main";
+    }
+
+    @PostUpdate
+    void onUpdate(){
+        updatedAt=Instant.now();
     }
 
 

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class GithubApiClient {
+public class GitHubApiClient {
 
     private static final String API_BASE="https://api.github.com";
     private static final ParameterizedTypeReference<List<Map<String,Object>>>LIST_MAP=new ParameterizedTypeReference<>() {

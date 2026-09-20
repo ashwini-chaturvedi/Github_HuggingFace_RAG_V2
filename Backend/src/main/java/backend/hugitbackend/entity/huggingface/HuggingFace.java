@@ -1,5 +1,6 @@
 package backend.hugitbackend.entity.huggingface;
 
+import backend.hugitbackend.component.EncryptedStringConverter;
 import backend.hugitbackend.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class HuggingFace {
     private UUID id;
 
     @Column(name = "hugging_face_id",unique = true,nullable = false)
-    private long huggingFaceId;
+    private String huggingFaceId;
 
     @Column(name = "user_id", unique = true, nullable = false)
     private UUID userId;
@@ -35,28 +36,39 @@ public class HuggingFace {
     private String displayName;
 
     @Column(name = "avatarURL",length = 500)
-    private String avatarURL;
+    private String avatarUrl;
 
+    @Convert(converter = EncryptedStringConverter.class)
     @Column(name = "access_token",nullable = false,columnDefinition = "TEXT")
     private String accessToken;
+
+    @Convert(converter = EncryptedStringConverter.class)
+    @Column(name = "refresh_token", columnDefinition = "TEXT")
+    private String refreshToken;
 
     @Column(name = "token_scopes",length = 500)
     private String tokenScope;
 
-    @Column(name = "refresh_token", columnDefinition = "TEXT")
-    private String refreshToken;
 
     @Column(name = "token_expires_at")
     private Instant tokenExpiresAt;
 
     @Column(name = "created_at",nullable = false,updatable = false)
     private Instant createdAt;
+    @Column(name = "updated_at",nullable = false)
+    private Instant updatedAt;
 
     @PrePersist
     void onCreate(){
         if(createdAt==null){
             createdAt=Instant.now();
         }
+        updatedAt=Instant.now();
+    }
+
+    @PreUpdate
+    void onUpdate(){
+        updatedAt=Instant.now();
     }
 
 }

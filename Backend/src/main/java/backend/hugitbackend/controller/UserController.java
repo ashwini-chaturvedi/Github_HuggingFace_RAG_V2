@@ -22,7 +22,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable UUID id){
         try {
-            return ResponseEntity.ok(this.userService.getUser(id));
+            return ResponseEntity.ok(this.userService.requiredById(id));
         } catch (RuntimeException e) {
             throw new NotFoundException(e.getMessage());
         }

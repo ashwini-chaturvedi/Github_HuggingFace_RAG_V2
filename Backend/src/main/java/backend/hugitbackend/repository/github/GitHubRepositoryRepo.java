@@ -8,9 +8,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface GitHubRepositoryRepo extends JpaRepository<GithubRepository, UUID> {
+    List<GithubRepository> findByGithubConnectionIdAfterOrderByFullNameAsc(UUID githubId);
 
-    List<GithubRepository> findByGithubIdOrderByFullNameAsc(UUID githubId);
-
-    Optional<GithubRepository>findByIdAndGithubId(UUID id, UUID githubId);
-    Optional<GithubRepository>findByGithubIdAndGithubRepoId(UUID githubId, long githubRepoId);
+    Optional<GithubRepository>findByIdAndGithubConnectionId(UUID id, UUID githubId);
+    Optional<GithubRepository>findByGithubConnectionIdAndGithubRepoId(UUID githubId, long githubRepoId);
 }

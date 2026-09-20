@@ -1,5 +1,6 @@
 package backend.hugitbackend.entity.github;
 
+import backend.hugitbackend.component.EncryptedStringConverter;
 import backend.hugitbackend.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,13 +38,14 @@ public class Github {
     @Column(name = "avatarURL",length = 500)
     private String avatarURL;
 
+    @Convert(converter = EncryptedStringConverter.class)
     @Column(name = "access_token",nullable = false,columnDefinition = "TEXT")
     private String accessToken;
 
     @Column(name = "token_scopes",length = 500)
     private String tokenScope;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
     @Column(name = "created_at",nullable = false,updatable = false)
