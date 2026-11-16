@@ -1,9 +1,6 @@
 package backend.hugitbackend.service.indexing;
 
-import backend.hugitbackend.entity.github.GithubRepository;
 import backend.hugitbackend.entity.enums.IndexStatus;
-import backend.hugitbackend.exceptions.BadRequestException;
-import backend.hugitbackend.exceptions.NotFoundException;
 import backend.hugitbackend.service.ai.RAG_Settings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +10,9 @@ import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service

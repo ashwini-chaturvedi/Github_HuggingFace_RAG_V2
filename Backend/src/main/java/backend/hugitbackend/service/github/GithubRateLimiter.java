@@ -9,7 +9,7 @@ public class GitHubRateLimiter {
 
     private final long delayMs;
 
-    public GitHubRateLimiter(@Value("${api.github.api-delay-ms:50}") long delay){
+    public GitHubRateLimiter(@Value("${api.api-delay-ms:50}") long delay){
         this.delayMs=Math.max(0,delay);
     }
 

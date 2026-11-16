@@ -25,7 +25,7 @@ public class HuggingFaceRepository {
     private UUID id;
 
     @Column(name = "hugging_face_connection_id",nullable = false)
-    private UUID githubConnectionId;
+    private UUID huggingFaceConnectionId;
 
     @Column(name = "repo_id",nullable = false,length = 300)
     private String repoId;

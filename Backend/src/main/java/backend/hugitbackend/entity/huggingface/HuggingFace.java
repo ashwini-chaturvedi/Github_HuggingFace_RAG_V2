@@ -24,7 +24,7 @@ public class HuggingFace {
     private UUID id;
 
     @Column(name = "hugging_face_id",unique = true,nullable = false)
-    private String huggingFaceId;
+    private long huggingFaceId;
 
     @Column(name = "user_id", unique = true, nullable = false)
     private UUID userId;

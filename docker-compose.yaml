@@ -16,6 +16,52 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  #    networks:
+  #      - huGit-net
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: huGit-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - huGit_ollama_data:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: 30m          # keep models loaded in memory between requests
+      OLLAMA_MAX_LOADED_MODELS: 2     # allow chat + embedding model loaded together
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+    # Uncomment for NVIDIA GPU support (requires nvidia-container-toolkit):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+  #    networks:
+  #      - huGit-net
+
+  # One-shot job: pulls the models into the ollama volume, then exits.
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: huGit-ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        ollama pull gemma3:4b &&
+        ollama pull qwen3-embedding:0.6b
+    restart: "no"
 #    networks:
 #      - huGit-net
 
@@ -30,10 +76,13 @@ services:
 #      DB_URL: jdbc:postgresql://postgres:5432/huGit
 #      DB_USERNAME: postgres
 #      DB_PASSWORD: postgres
+#      OLLAMA_BASE_URL: http://ollama:11434
 #    ports:
 #      - "8081:8081"
 #    depends_on:
 #      postgres:
+#        condition: service_healthy
+#      ollama:
 #        condition: service_healthy
 #    networks:
 #      - huGit-net
@@ -54,6 +103,7 @@ services:
 
 volumes:
   huGit_pg_data:
+  huGit_ollama_data:
 
 #networks:
 #  huGit-net:

@@ -8,10 +8,10 @@ public record HuggingFaceRequest(
         UUID userId,
         String huggingFaceUserName,
         String displayName,
-        String avatarURL,
+        String avatarUrl,
         String accessToken,
-        String tokenScope,
         String refreshToken,
+        String tokenScope,
         Instant tokenExpiresAt
 ) {
 }
