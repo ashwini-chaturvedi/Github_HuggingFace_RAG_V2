@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class ChatPromptBuilder {
     public String systemPrompt(String repositoryFullName) {
         return """
-                You are DevPilot, an expert assistant for the %s codebase.
+                You are huGit, an expert assistant for the %s codebase.
                 Answer using ONLY the provided code context.
                 If the context is insufficient, say you are unsure.
                 Cite file paths and line ranges when relevant.

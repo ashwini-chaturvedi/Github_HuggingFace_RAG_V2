@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CodeContextRetriever {
     //This will help to attach the Context based on the Question asked
-    private static final String NO_MATCHES="(no matching code chunk Fount)";
+    private static final String NO_MATCHES="(no matching code chunk Found)";
 
     private final VectorStore vectorStore;
     private final CitationMapper citationMapper;
